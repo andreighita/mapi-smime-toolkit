@@ -1,0 +1,20 @@
+﻿  stdafx.cpp
+  SecurityProfile.cpp
+c:\source\dsmsgeu\mapismimetoolkit\mapismimetoolkit\mapismimetoolkit\securityprofile.h(45): warning C4200: nonstandard extension used: zero-sized array in struct/union
+  c:\source\dsmsgeu\mapismimetoolkit\mapismimetoolkit\mapismimetoolkit\securityprofile.h(45): note: This member will be ignored by a defaulted constructor or copy/move assignment operator
+c:\source\dsmsgeu\mapismimetoolkit\mapismimetoolkit\mapismimetoolkit\securityprofile.cpp(457): warning C4267: '=': conversion from 'size_t' to 'WORD', possible loss of data
+c:\source\dsmsgeu\mapismimetoolkit\mapismimetoolkit\mapismimetoolkit\securityprofile.cpp(458): warning C4267: '=': conversion from 'size_t' to 'WORD', possible loss of data
+c:\source\dsmsgeu\mapismimetoolkit\mapismimetoolkit\mapismimetoolkit\securityprofile.cpp(463): warning C4267: '=': conversion from 'size_t' to 'WORD', possible loss of data
+c:\source\dsmsgeu\mapismimetoolkit\mapismimetoolkit\mapismimetoolkit\securityprofile.cpp(464): warning C4267: '=': conversion from 'size_t' to 'WORD', possible loss of data
+c:\source\dsmsgeu\mapismimetoolkit\mapismimetoolkit\mapismimetoolkit\securityprofile.cpp(469): warning C4244: '=': conversion from 'unsigned long' to 'WORD', possible loss of data
+c:\source\dsmsgeu\mapismimetoolkit\mapismimetoolkit\mapismimetoolkit\securityprofile.cpp(470): warning C4244: '=': conversion from 'DWORD' to 'WORD', possible loss of data
+c:\source\dsmsgeu\mapismimetoolkit\mapismimetoolkit\mapismimetoolkit\securityprofile.cpp(475): warning C4244: '=': conversion from 'unsigned long' to 'WORD', possible loss of data
+c:\source\dsmsgeu\mapismimetoolkit\mapismimetoolkit\mapismimetoolkit\securityprofile.cpp(476): warning C4244: '=': conversion from 'DWORD' to 'WORD', possible loss of data
+c:\source\dsmsgeu\mapismimetoolkit\mapismimetoolkit\mapismimetoolkit\securityprofile.cpp(481): warning C4244: '=': conversion from 'unsigned long' to 'WORD', possible loss of data
+  RegistryHelper.cpp
+  MapiSmimeToolkit.cpp
+c:\source\dsmsgeu\mapismimetoolkit\mapismimetoolkit\mapismimetoolkit\securityprofile.h(45): warning C4200: nonstandard extension used: zero-sized array in struct/union
+  c:\source\dsmsgeu\mapismimetoolkit\mapismimetoolkit\mapismimetoolkit\securityprofile.h(45): note: This member will be ignored by a defaulted constructor or copy/move assignment operator
+  MapiSession.cpp
+  Generating Code...
+  MapiSmimeToolkit.vcxproj -> C:\source\dsmsgeu\MapiSmimeToolkit\MapiSmimeToolkit\Debug\Win32\MapiSmimeToolkit.exe

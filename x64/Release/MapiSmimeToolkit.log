@@ -1,0 +1,47 @@
+﻿  stdafx.cpp
+  MapiSession.cpp
+MapiSession.cpp(20): warning C4102: 'Cleanup': unreferenced label
+MapiSession.cpp(38): warning C4102: 'Cleanup': unreferenced label
+  MapiSmimeToolkit.cpp
+c:\source\dsmsgeu\mapismimetoolkit\mapismimetoolkit\mapismimetoolkit\SecurityProfile.h(44): warning C4200: nonstandard extension used: zero-sized array in struct/union
+  c:\source\dsmsgeu\mapismimetoolkit\mapismimetoolkit\mapismimetoolkit\SecurityProfile.h(44): note: This member will be ignored by a defaulted constructor or copy/move assignment operator
+c:\source\dsmsgeu\mapismimetoolkit\mapismimetoolkit\mapismimetoolkit\SecurityProfile.h(114): warning C4091: 'typedef ': ignored on left of 'SecProfEntry' when no variable is declared
+c:\source\dsmsgeu\mapismimetoolkit\mapismimetoolkit\mapismimetoolkit\SecurityProfile.h(122): warning C4091: 'typedef ': ignored on left of 'CERT_DATA' when no variable is declared
+MapiSmimeToolkit.cpp(328): warning C4102: 'Cleanup': unreferenced label
+  RegistryHelper.cpp
+  SecurityProfile.cpp
+c:\source\dsmsgeu\mapismimetoolkit\mapismimetoolkit\mapismimetoolkit\SecurityProfile.h(44): warning C4200: nonstandard extension used: zero-sized array in struct/union
+  c:\source\dsmsgeu\mapismimetoolkit\mapismimetoolkit\mapismimetoolkit\SecurityProfile.h(44): note: This member will be ignored by a defaulted constructor or copy/move assignment operator
+c:\source\dsmsgeu\mapismimetoolkit\mapismimetoolkit\mapismimetoolkit\SecurityProfile.h(114): warning C4091: 'typedef ': ignored on left of 'SecProfEntry' when no variable is declared
+c:\source\dsmsgeu\mapismimetoolkit\mapismimetoolkit\mapismimetoolkit\SecurityProfile.h(122): warning C4091: 'typedef ': ignored on left of 'CERT_DATA' when no variable is declared
+SecurityProfile.cpp(34): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+SecurityProfile.cpp(35): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+SecurityProfile.cpp(48): warning C4244: '=': conversion from 'long' to 'byte', possible loss of data
+SecurityProfile.cpp(160): warning C4102: 'Cleanup': unreferenced label
+SecurityProfile.cpp(258): warning C4018: '<': signed/unsigned mismatch
+SecurityProfile.cpp(375): warning C4102: 'Error': unreferenced label
+SecurityProfile.cpp(376): warning C4102: 'Cleanup': unreferenced label
+SecurityProfile.cpp(344): warning C4101: 'lpSysTime': unreferenced local variable
+SecurityProfile.cpp(459): warning C4267: '=': conversion from 'size_t' to 'WORD', possible loss of data
+SecurityProfile.cpp(460): warning C4267: '=': conversion from 'size_t' to 'WORD', possible loss of data
+SecurityProfile.cpp(465): warning C4267: '=': conversion from 'size_t' to 'WORD', possible loss of data
+SecurityProfile.cpp(466): warning C4267: '=': conversion from 'size_t' to 'WORD', possible loss of data
+SecurityProfile.cpp(471): warning C4244: '=': conversion from 'unsigned __int64' to 'WORD', possible loss of data
+SecurityProfile.cpp(472): warning C4244: '=': conversion from 'DWORD' to 'WORD', possible loss of data
+SecurityProfile.cpp(477): warning C4244: '=': conversion from 'unsigned __int64' to 'WORD', possible loss of data
+SecurityProfile.cpp(478): warning C4244: '=': conversion from 'DWORD' to 'WORD', possible loss of data
+SecurityProfile.cpp(483): warning C4244: '=': conversion from 'unsigned __int64' to 'WORD', possible loss of data
+SecurityProfile.cpp(484): warning C4244: '=': conversion from 'DWORD' to 'WORD', possible loss of data
+SecurityProfile.cpp(577): warning C4101: 'i': unreferenced local variable
+SecurityProfile.cpp(671): warning C4018: '<': signed/unsigned mismatch
+SecurityProfile.cpp(744): warning C4102: 'Cleanup': unreferenced label
+SecurityProfile.cpp(779): warning C4102: 'Cleanup': unreferenced label
+SecurityProfile.cpp(906): warning C4102: 'Cleanup': unreferenced label
+SecurityProfile.cpp(825): warning C4101: 'i': unreferenced local variable
+SecurityProfile.cpp(935): warning C4102: 'Error': unreferenced label
+SecurityProfile.cpp(936): warning C4102: 'Cleanup': unreferenced label
+  Generating code
+  All 480 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+  Finished generating code
+  MapiSmimeToolkit.vcxproj -> C:\source\dsmsgeu\MapiSmimeToolkit\MapiSmimeToolkit\Release\x64\MapiSmimeToolkit.exe
+  MapiSmimeToolkit.vcxproj -> C:\source\dsmsgeu\MapiSmimeToolkit\MapiSmimeToolkit\Release\x64\MapiSmimeToolkit.pdb (Full PDB)
