@@ -2,39 +2,86 @@
     CONSOLE APPLICATION : MapiSmimeToolkit Project Overview
 ========================================================================
 
-AppWizard has created this MapiSmimeToolkit application for you.
+MapiSmimeToolkit is an S/MIME security profile management command line tool. 
 
-This file contains a summary of what you will find in each of the files that
-make up your MapiSmimeToolkit application.
+Running the tool:
+
+1. Displaying the help info:	MapiSmimeToolkit.exe -?
+	
+MapiSmimeToolkit - Outlook Security Profile toolkit.
+Allows listing and managing security profiles.
+
+Usage: MapiSmimeToolkit [-s SignatureHash] [-e EncryptionHash] [-u EmailAddress]
+       [-o] [-d] [-p OutlookProfileName] [-l] [-h]
+
+Options:
+       -s:     The Signature certificate hash (thumbprint)
+       -e:     The Encryption certificate hash (thumbprint)
+       -u:     The user e-mail address to add to the security profile name
+       -p:     The name of the Outlook profile to perform the changes in.
+               If this is not specified, the default Outlook profile will be used.
+       -l:     For running the tool in List mode.
+       -h:     Allows specifying the certificate hashes rather than performing a
+               name look-up.
+       -o      Overwrites any existing security profiles.
+       -d      Sets the new security profile as the default profile.
+       -c      Clears (removes) all existing security profiles.
+       -?      Displays this usage information.
+
+2: List the existing security profiles:	MapiSmimeToolkit.exe -l
+
+Logging on..
+Fetching security profiles...
+Listing security profiles...
+Listing security profile #1
+PropTag: PR_CERT_PROP_VERSION, Value: 1
+PropTag: PR_CERT_MESSAGE_ENCODING, Value: 1
+PropTag: PR_CERT_DEFAULTS, Value: 7
+PropTag: PR_CERT_DISPLAY_NAME_W, Value: My S/MIME Settings (user@contoso.com)
+PropTag: PR_CERT_KEYEX_SHA1_HASH, Value: 73282f1c80b0d305dd71eac9c154ef137ee64c24
+PropTag: PR_CERT_SIGN_SHA1_HASH, Value: 7afbc6cae0772d449a672a4ca216136b6c3229f9
+
+3. Automatically detect the best S/MIME certificate and create a new security profile:	MapiSmimeToolkit.exe -u EMAIL_ADDRESS -o -d
+For example: MapiSmimeToolkit.exe -u user@contoso.com -o -d. Please note the e-mail address must match the certificate name.
+
+Logging on..
+Fetching security profiles...
+The name of the new security profile will be My S/MIME Settings (user@contoso.com)
+Certificate lookup not implemented. Please use the -h -s -e switches...
+Looking up signature certificate...
+Open the MY system store.
+Looking up your certificate based on the e-mail address you've provided...
+Looking up encryption certificate...
+Open the MY system store.
+Looking up your certificate based on the e-mail address you've provided...
+Creating security profile...
+Assembling the new security profile data...
+Saving security profile changes...
+Overwriting existing security profiles...
+
+4. Create a security profile with specific certificates:	MapiSmimeToolkit.exe -u EMAIL_ADDRESS -h -s SIGNATURE_CERT_THUMBPRINT -e ENCRYPTION_CERT_THUMBPRINT -o -d
+For example: MapiSmimeToolkit.exe -u user@contoso.com -h -s 7afbc6cae0772d449a672a4ca216136b6c3229f9 -e 73282f1c80b0d305dd71eac9c154ef137ee64c24 -o -d
+	
+Logging on..
+Fetching security profiles...
+The name of the new security profile will be My S/MIME Settings (user@contoso.com)
+Searching for signature certificate...
+Open the MY system store.
+Looking up your certificate based on the thumbprint you've provided...
+Certificate found.
+Searching for encryption certificate...
+Open the MY system store.
+Looking up your certificate based on the thumbprint you've provided...
+Certificate found.
+Creating security profile...
+Assembling the new security profile data...
+Saving security profile changes...
+Overwriting existing security profiles...
 
 
-MapiSmimeToolkit.vcxproj
-    This is the main project file for VC++ projects generated using an Application Wizard.
-    It contains information about the version of Visual C++ that generated the file, and
-    information about the platforms, configurations, and project features selected with the
-    Application Wizard.
+5. Clear all security profiles:	MapiSmimeToolkit.exe -c
 
-MapiSmimeToolkit.vcxproj.filters
-    This is the filters file for VC++ projects generated using an Application Wizard. 
-    It contains information about the association between the files in your project 
-    and the filters. This association is used in the IDE to show grouping of files with
-    similar extensions under a specific node (for e.g. ".cpp" files are associated with the
-    "Source Files" filter).
-
-MapiSmimeToolkit.cpp
-    This is the main application source file.
-
-/////////////////////////////////////////////////////////////////////////////
-Other standard files:
-
-StdAfx.h, StdAfx.cpp
-    These files are used to build a precompiled header (PCH) file
-    named MapiSmimeToolkit.pch and a precompiled types file named StdAfx.obj.
-
-/////////////////////////////////////////////////////////////////////////////
-Other notes:
-
-AppWizard uses "TODO:" comments to indicate parts of the source code you
-should add to or customize.
-
-/////////////////////////////////////////////////////////////////////////////
+Logging on..
+Fetching security profiles...
+Clearing security profiles...
+Deleting existing security profiles...

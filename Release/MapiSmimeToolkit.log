@@ -1,12 +1,12 @@
 ﻿  stdafx.cpp
   MapiSession.cpp
   MapiSmimeToolkit.cpp
-c:\source\dsmsgeu\mapismimetoolkit\mapismimetoolkit\mapismimetoolkit\SecurityProfile.h(45): warning C4200: nonstandard extension used: zero-sized array in struct/union
-  c:\source\dsmsgeu\mapismimetoolkit\mapismimetoolkit\mapismimetoolkit\SecurityProfile.h(45): note: This member will be ignored by a defaulted constructor or copy/move assignment operator
+c:\users\catagh\source\repos\mapi-smime-toolkit\SecurityProfile.h(45): warning C4200: nonstandard extension used: zero-sized array in struct/union
+  c:\users\catagh\source\repos\mapi-smime-toolkit\SecurityProfile.h(45): note: This member will be ignored by a defaulted constructor or copy/move assignment operator
   RegistryHelper.cpp
   SecurityProfile.cpp
-c:\source\dsmsgeu\mapismimetoolkit\mapismimetoolkit\mapismimetoolkit\SecurityProfile.h(45): warning C4200: nonstandard extension used: zero-sized array in struct/union
-  c:\source\dsmsgeu\mapismimetoolkit\mapismimetoolkit\mapismimetoolkit\SecurityProfile.h(45): note: This member will be ignored by a defaulted constructor or copy/move assignment operator
+c:\users\catagh\source\repos\mapi-smime-toolkit\SecurityProfile.h(45): warning C4200: nonstandard extension used: zero-sized array in struct/union
+  c:\users\catagh\source\repos\mapi-smime-toolkit\SecurityProfile.h(45): note: This member will be ignored by a defaulted constructor or copy/move assignment operator
 SecurityProfile.cpp(457): warning C4267: '=': conversion from 'size_t' to 'WORD', possible loss of data
 SecurityProfile.cpp(458): warning C4267: '=': conversion from 'size_t' to 'WORD', possible loss of data
 SecurityProfile.cpp(463): warning C4267: '=': conversion from 'size_t' to 'WORD', possible loss of data
@@ -19,4 +19,4 @@ SecurityProfile.cpp(481): warning C4244: '=': conversion from 'unsigned long' to
   Generating code
   All 480 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
   Finished generating code
-  MapiSmimeToolkit.vcxproj -> C:\source\dsmsgeu\MapiSmimeToolkit\MapiSmimeToolkit\Release\Win32\MapiSmimeToolkit.exe
+  MapiSmimeToolkit.vcxproj -> C:\Users\catagh\Source\Repos\mapi-smime-toolkit\Release\Win32\MapiSmimeToolkit.exe
