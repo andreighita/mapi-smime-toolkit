@@ -242,6 +242,9 @@ void _tmain(int argc, _TCHAR* argv[])
 		EC_HR(MAPIInitialize(0));
 
 		LPMAPISESSION lpSession = NULL;
+		// not allocated memory here !!!!!!!!!!!!!!!!!!!!!!!!
+		// !!!!!!!!!!! // #??? 
+
 		ZeroMemory(&lpSession, sizeof(LPMAPISESSION));
 		if (!pToolkitOptions->bDefaultOutlookProfile)
 		{
@@ -270,8 +273,11 @@ void _tmain(int argc, _TCHAR* argv[])
 		{
 			std::wstring wsProfileNAme = L"My S/MIME Settings (" + pToolkitOptions->wsEmailAddress + L")";
 			if (!pToolkitOptions->bOverWrite)
-			
+			// #??? 
+			// something wrong with this logic here for overweriting?
+
 			wprintf(L"Validating new security profile name.\n");
+			// #??? this doesn't seem to increment the existing profile crated with Outlook 
 			wsProfileNAme = ValidateSecurityProfileName(cSecurityProfiles, pSecProfEntry, wsProfileNAme, 1);
 			
 			wprintf(L"The name of the new security profile will be %ls\n", (LPWSTR)wsProfileNAme.c_str());

@@ -1,22 +1,24 @@
 ﻿  stdafx.cpp
   MapiSession.cpp
   MapiSmimeToolkit.cpp
-c:\users\catagh\source\repos\mapi-smime-toolkit\SecurityProfile.h(45): warning C4200: nonstandard extension used: zero-sized array in struct/union
-  c:\users\catagh\source\repos\mapi-smime-toolkit\SecurityProfile.h(45): note: This member will be ignored by a defaulted constructor or copy/move assignment operator
+c:\users\anixi\source\repos\mapi-smime-toolkit\securityprofile.h(45): warning C4200: nonstandard extension used: zero-sized array in struct/union
+  c:\users\anixi\source\repos\mapi-smime-toolkit\securityprofile.h(45): note: This member will be ignored by a defaulted constructor or copy/move assignment operator
   RegistryHelper.cpp
   SecurityProfile.cpp
-c:\users\catagh\source\repos\mapi-smime-toolkit\SecurityProfile.h(45): warning C4200: nonstandard extension used: zero-sized array in struct/union
-  c:\users\catagh\source\repos\mapi-smime-toolkit\SecurityProfile.h(45): note: This member will be ignored by a defaulted constructor or copy/move assignment operator
-SecurityProfile.cpp(457): warning C4267: '=': conversion from 'size_t' to 'WORD', possible loss of data
-SecurityProfile.cpp(458): warning C4267: '=': conversion from 'size_t' to 'WORD', possible loss of data
-SecurityProfile.cpp(463): warning C4267: '=': conversion from 'size_t' to 'WORD', possible loss of data
-SecurityProfile.cpp(464): warning C4267: '=': conversion from 'size_t' to 'WORD', possible loss of data
-SecurityProfile.cpp(469): warning C4244: '=': conversion from 'unsigned long' to 'WORD', possible loss of data
-SecurityProfile.cpp(470): warning C4244: '=': conversion from 'DWORD' to 'WORD', possible loss of data
-SecurityProfile.cpp(475): warning C4244: '=': conversion from 'unsigned long' to 'WORD', possible loss of data
-SecurityProfile.cpp(476): warning C4244: '=': conversion from 'DWORD' to 'WORD', possible loss of data
-SecurityProfile.cpp(481): warning C4244: '=': conversion from 'unsigned long' to 'WORD', possible loss of data
+c:\users\anixi\source\repos\mapi-smime-toolkit\securityprofile.h(45): warning C4200: nonstandard extension used: zero-sized array in struct/union
+  c:\users\anixi\source\repos\mapi-smime-toolkit\securityprofile.h(45): note: This member will be ignored by a defaulted constructor or copy/move assignment operator
+c:\users\anixi\source\repos\mapi-smime-toolkit\securityprofile.cpp(457): warning C4267: '=': conversion from 'size_t' to 'WORD', possible loss of data
+c:\users\anixi\source\repos\mapi-smime-toolkit\securityprofile.cpp(458): warning C4267: '=': conversion from 'size_t' to 'WORD', possible loss of data
+c:\users\anixi\source\repos\mapi-smime-toolkit\securityprofile.cpp(463): warning C4267: '=': conversion from 'size_t' to 'WORD', possible loss of data
+c:\users\anixi\source\repos\mapi-smime-toolkit\securityprofile.cpp(464): warning C4267: '=': conversion from 'size_t' to 'WORD', possible loss of data
+c:\users\anixi\source\repos\mapi-smime-toolkit\securityprofile.cpp(469): warning C4244: '=': conversion from 'unsigned long' to 'WORD', possible loss of data
+c:\users\anixi\source\repos\mapi-smime-toolkit\securityprofile.cpp(470): warning C4244: '=': conversion from 'DWORD' to 'WORD', possible loss of data
+c:\users\anixi\source\repos\mapi-smime-toolkit\securityprofile.cpp(475): warning C4244: '=': conversion from 'unsigned long' to 'WORD', possible loss of data
+c:\users\anixi\source\repos\mapi-smime-toolkit\securityprofile.cpp(476): warning C4244: '=': conversion from 'DWORD' to 'WORD', possible loss of data
+c:\users\anixi\source\repos\mapi-smime-toolkit\securityprofile.cpp(481): warning C4244: '=': conversion from 'unsigned long' to 'WORD', possible loss of data
   Generating code
-  All 480 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+  505 of 505 functions (100.0%) were compiled.
+    45 functions were new in current compilation
+    0 functions had inline decision re-evaluated but remain unchanged
   Finished generating code
-  MapiSmimeToolkit.vcxproj -> C:\Users\catagh\Source\Repos\mapi-smime-toolkit\Release\Win32\MapiSmimeToolkit.exe
+  MapiSmimeToolkit.vcxproj -> C:\Users\anixi\Source\Repos\mapi-smime-toolkit\Release\Win32\MapiSmimeToolkit.exe
