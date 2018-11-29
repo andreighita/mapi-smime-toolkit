@@ -6,7 +6,7 @@
 #include "MapiSmimeToolkit.h"
 #include "MapiSession.h"
 #include "SecurityProfile.h"
-
+#include "ADHelper.h"
 
 BOOL Is64BitProcess(void)
 {
@@ -241,102 +241,107 @@ void _tmain(int argc, _TCHAR* argv[])
 		EC_HR(CoInitialize(NULL));
 		EC_HR(MAPIInitialize(0));
 
-		LPMAPISESSION lpSession = NULL;
-		ZeroMemory(&lpSession, sizeof(LPMAPISESSION));
-		if (!pToolkitOptions->bDefaultOutlookProfile)
-		{
-			wprintf(L"Logging in to the MAPI subsystem.\n");
-			EC_HR(Logon((LPWSTR)pToolkitOptions->wsOutlookProfileName.c_str(), &lpSession));
-		}
-		else
-		{
-			wprintf(L"Logging in to the MAPI subsystem.\n");
-			EC_HR(Logon(&lpSession));
-		}
-
-		ULONG cSecurityProfiles = 0;
-		SecProfEntry * pSecProfEntry = NULL;
-		wprintf(L"Getting security profile count in current MAPI profile.\n");
-		GetSecurityProfileCount(lpSession, &cSecurityProfiles);
-		if (cSecurityProfiles > 0)
-		{
-			MAPIAllocateBuffer(sizeof(SecProfEntry) * cSecurityProfiles, (LPVOID*)&pSecProfEntry);
-			ZeroMemory(pSecProfEntry, sizeof(SecProfEntry) * cSecurityProfiles);
-			wprintf(L"Fetching security profiles...\n");
-			EC_HR(GetSecurityProfiles(lpSession, pSecProfEntry));
-		}
-
-		if (RUNNINGMODE_EDIT == pToolkitOptions->ulRunningMode)
-		{
-			std::wstring wsProfileNAme = L"My S/MIME Settings (" + pToolkitOptions->wsEmailAddress + L")";
-			if (!pToolkitOptions->bOverWrite)
-			
-			wprintf(L"Validating new security profile name.\n");
-			wsProfileNAme = ValidateSecurityProfileName(cSecurityProfiles, pSecProfEntry, wsProfileNAme, 1);
-			
-			wprintf(L"The name of the new security profile will be %ls\n", (LPWSTR)wsProfileNAme.c_str());
-			LPSBinary lpProfile = new SBinary();
-			if (CERTMODE_HASH == pToolkitOptions->ulCertMode)
-			{
-				DWORD cbSignHash = 0;
-				LPBYTE lpbSignHash = new BYTE(20);
-				DWORD cbEncHash = 0;
-				LPBYTE lpbEncHash = new BYTE(20);
-				// Making sure the input certificate thumbprints are valid
-				wprintf(L"Searching for signature certificate...\n");
-				EC_BOOL(FindCertificate(pToolkitOptions->wsSigningCertHash, &cbSignHash, &lpbSignHash));
-				wprintf(L"Searching for encryption certificate...\n");
-				EC_BOOL(FindCertificate(pToolkitOptions->wsEncryptionCertHash, &cbEncHash, &lpbEncHash));
-				if (cbSignHash > 0 && cbEncHash > 0)
-				{
-					wprintf(L"Creating security profile...\n");
-					EC_HR(NewSecurityProfile(cbSignHash, lpbSignHash, cbEncHash, lpbEncHash, wsProfileNAme, pToolkitOptions->bDefaultSecurityProfule, lpProfile));
-					if (lpProfile != 0)
-					{
-						wprintf(L"Saving security profile changes...\n");
-						EC_HR(SaveSecurityProfile(lpSession, lpProfile, pToolkitOptions->bOverWrite, pToolkitOptions->bDefaultSecurityProfule));
-					}
-				}
-				else
-					wprintf(L"No SMIME certificates found.\n");
-			}
-			else
-			{
-				DWORD cbSignHash = 0;
-				LPBYTE lpbSignHash = new BYTE(20);
-				DWORD cbEncHash = 0;
-				LPBYTE lpbEncHash = new BYTE(20);
-
-				wprintf(L"Looking up signature certificate...\n");
-				EC_BOOL(CertificateFound(pToolkitOptions->wsEmailAddress, &cbSignHash, &lpbSignHash, CERT_DIGITAL_SIGNATURE_KEY_USAGE));
-				wprintf(L"Looking up encryption certificate...\n");
-				EC_BOOL(CertificateFound(pToolkitOptions->wsEmailAddress, &cbEncHash, &lpbEncHash, CERT_KEY_ENCIPHERMENT_KEY_USAGE));
-				if (cbSignHash > 0 && cbEncHash > 0)
-				{
-					wprintf(L"Creating security profile...\n");
-					EC_HR(NewSecurityProfile(cbSignHash, lpbSignHash, cbEncHash, lpbEncHash, wsProfileNAme, pToolkitOptions->bDefaultSecurityProfule, lpProfile));
-					if (lpProfile != 0)
-					{
-						wprintf(L"Saving security profile changes...\n");
-						EC_HR(SaveSecurityProfile(lpSession, lpProfile, pToolkitOptions->bOverWrite, pToolkitOptions->bDefaultSecurityProfule));
-					}
-				}
-				else
-					wprintf(L"No SMIME certificates found.\n");
-			}
+		std::wstring wsUserDn = GetUserDn();
+		std::wstring wstest = FetchUserCertificates(wsUserDn);
 
 
-		}
-		else if ((RUNNINGMODE_LIST == pToolkitOptions->ulRunningMode) && (cSecurityProfiles > 0))
-		{
-			wprintf(L"Listing security profiles...\n");
-			ListSecurityProfiles(cSecurityProfiles, pSecProfEntry);
-		}
-		else if ((RUNNINGMODE_CLEAR == pToolkitOptions->ulRunningMode))
-		{
-			wprintf(L"Clearing security profiles...\n");
-			EC_HR(ClearSecurityProfiles(lpSession));
-		}
+
+		//LPMAPISESSION lpSession = NULL;
+		//ZeroMemory(&lpSession, sizeof(LPMAPISESSION));
+		//if (!pToolkitOptions->bDefaultOutlookProfile)
+		//{
+		//	wprintf(L"Logging in to the MAPI subsystem.\n");
+		//	EC_HR(Logon((LPWSTR)pToolkitOptions->wsOutlookProfileName.c_str(), &lpSession));
+		//}
+		//else
+		//{
+		//	wprintf(L"Logging in to the MAPI subsystem.\n");
+		//	EC_HR(Logon(&lpSession));
+		//}
+
+		//ULONG cSecurityProfiles = 0;
+		//SecProfEntry * pSecProfEntry = NULL;
+		//wprintf(L"Getting security profile count in current MAPI profile.\n");
+		//GetSecurityProfileCount(lpSession, &cSecurityProfiles);
+		//if (cSecurityProfiles > 0)
+		//{
+		//	MAPIAllocateBuffer(sizeof(SecProfEntry) * cSecurityProfiles, (LPVOID*)&pSecProfEntry);
+		//	ZeroMemory(pSecProfEntry, sizeof(SecProfEntry) * cSecurityProfiles);
+		//	wprintf(L"Fetching security profiles...\n");
+		//	EC_HR(GetSecurityProfiles(lpSession, pSecProfEntry));
+		//}
+
+		//if (RUNNINGMODE_EDIT == pToolkitOptions->ulRunningMode)
+		//{
+		//	std::wstring wsProfileNAme = L"My S/MIME Settings (" + pToolkitOptions->wsEmailAddress + L")";
+		//	if (!pToolkitOptions->bOverWrite)
+		//	
+		//	wprintf(L"Validating new security profile name.\n");
+		//	wsProfileNAme = ValidateSecurityProfileName(cSecurityProfiles, pSecProfEntry, wsProfileNAme, 1);
+		//	
+		//	wprintf(L"The name of the new security profile will be %ls\n", (LPWSTR)wsProfileNAme.c_str());
+		//	LPSBinary lpProfile = new SBinary();
+		//	if (CERTMODE_HASH == pToolkitOptions->ulCertMode)
+		//	{
+		//		DWORD cbSignHash = 0;
+		//		LPBYTE lpbSignHash = new BYTE(20);
+		//		DWORD cbEncHash = 0;
+		//		LPBYTE lpbEncHash = new BYTE(20);
+		//		// Making sure the input certificate thumbprints are valid
+		//		wprintf(L"Searching for signature certificate...\n");
+		//		EC_BOOL(FindCertificate(pToolkitOptions->wsSigningCertHash, &cbSignHash, &lpbSignHash));
+		//		wprintf(L"Searching for encryption certificate...\n");
+		//		EC_BOOL(FindCertificate(pToolkitOptions->wsEncryptionCertHash, &cbEncHash, &lpbEncHash));
+		//		if (cbSignHash > 0 && cbEncHash > 0)
+		//		{
+		//			wprintf(L"Creating security profile...\n");
+		//			EC_HR(NewSecurityProfile(cbSignHash, lpbSignHash, cbEncHash, lpbEncHash, wsProfileNAme, pToolkitOptions->bDefaultSecurityProfule, lpProfile));
+		//			if (lpProfile != 0)
+		//			{
+		//				wprintf(L"Saving security profile changes...\n");
+		//				EC_HR(SaveSecurityProfile(lpSession, lpProfile, pToolkitOptions->bOverWrite, pToolkitOptions->bDefaultSecurityProfule));
+		//			}
+		//		}
+		//		else
+		//			wprintf(L"No SMIME certificates found.\n");
+		//	}
+		//	else
+		//	{
+		//		DWORD cbSignHash = 0;
+		//		LPBYTE lpbSignHash = new BYTE(20);
+		//		DWORD cbEncHash = 0;
+		//		LPBYTE lpbEncHash = new BYTE(20);
+
+		//		wprintf(L"Looking up signature certificate...\n");
+		//		EC_BOOL(CertificateFound(pToolkitOptions->wsEmailAddress, &cbSignHash, &lpbSignHash, CERT_DIGITAL_SIGNATURE_KEY_USAGE));
+		//		wprintf(L"Looking up encryption certificate...\n");
+		//		EC_BOOL(CertificateFound(pToolkitOptions->wsEmailAddress, &cbEncHash, &lpbEncHash, CERT_KEY_ENCIPHERMENT_KEY_USAGE));
+		//		if (cbSignHash > 0 && cbEncHash > 0)
+		//		{
+		//			wprintf(L"Creating security profile...\n");
+		//			EC_HR(NewSecurityProfile(cbSignHash, lpbSignHash, cbEncHash, lpbEncHash, wsProfileNAme, pToolkitOptions->bDefaultSecurityProfule, lpProfile));
+		//			if (lpProfile != 0)
+		//			{
+		//				wprintf(L"Saving security profile changes...\n");
+		//				EC_HR(SaveSecurityProfile(lpSession, lpProfile, pToolkitOptions->bOverWrite, pToolkitOptions->bDefaultSecurityProfule));
+		//			}
+		//		}
+		//		else
+		//			wprintf(L"No SMIME certificates found.\n");
+		//	}
+
+
+		//}
+		//else if ((RUNNINGMODE_LIST == pToolkitOptions->ulRunningMode) && (cSecurityProfiles > 0))
+		//{
+		//	wprintf(L"Listing security profiles...\n");
+		//	ListSecurityProfiles(cSecurityProfiles, pSecProfEntry);
+		//}
+		//else if ((RUNNINGMODE_CLEAR == pToolkitOptions->ulRunningMode))
+		//{
+		//	wprintf(L"Clearing security profiles...\n");
+		//	EC_HR(ClearSecurityProfiles(lpSession));
+		//}
 
 
 		MAPIUninitialize();
