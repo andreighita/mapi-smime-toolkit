@@ -105,15 +105,12 @@ Cleanup:
 	return wszSmtpAddress;
 }
 
-std::wstring FetchUserCertificates(std::wstring wszUserDn)
+void FetchUserCertificates(std::wstring wszUserDn)
 {
-
 	std::wstring wszSmtpAddress = L"";
 
 	//Intialize COM
-
-
-
+	   
 	HRESULT hr = S_OK;
 
 	//Get rootDSE and the config container's DN.
@@ -156,16 +153,19 @@ std::wstring FetchUserCertificates(std::wstring wszUserDn)
 				for (LONG i = 0; i < cElements - 1; i++)
 				{
 					hr = SafeArrayGetElement(varPropValue.parray, &i, &propVal);
-					if (propVal.vt == VT_BSTR)
+					if (propVal.vt == VT_ARRAY)
 					{
-						std::wstring wszAddress = std::wstring(propVal.bstrVal);
+
+						// here we wanna read the propval and see how we parse it 
+
+						/*std::wstring wszAddress = std::wstring(propVal.bstrVal);
 						size_t pos = wszAddress.find(L"SMTP:");
 						if (pos != std::wstring::npos)
 						{
 							pos = wszAddress.find(L":");
 							wszSmtpAddress = wszAddress.substr(pos + 1);
 							break;
-						}
+						}*/
 					}
 				}
 
@@ -177,5 +177,5 @@ std::wstring FetchUserCertificates(std::wstring wszUserDn)
 Error:
 	goto Cleanup;
 Cleanup:
-	return wszSmtpAddress;
+	return;
 }
