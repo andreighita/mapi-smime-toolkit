@@ -1,22 +1,21 @@
 ﻿  stdafx.cpp
+  ADHelper.cpp
+c:\program files (x86)\windows kits\10\include\10.0.17763.0\shared\sspi.h(64): fatal error C1189: #error:   You must define one of SECURITY_WIN32, SECURITY_KERNEL, or
   MapiSession.cpp
   MapiSmimeToolkit.cpp
-c:\users\catagh\source\repos\mapi-smime-toolkit\SecurityProfile.h(45): warning C4200: nonstandard extension used: zero-sized array in struct/union
-  c:\users\catagh\source\repos\mapi-smime-toolkit\SecurityProfile.h(45): note: This member will be ignored by a defaulted constructor or copy/move assignment operator
+c:\users\catagh\source\repos\mapi-smime-toolkit\securityprofile.h(45): warning C4200: nonstandard extension used: zero-sized array in struct/union
+  c:\users\catagh\source\repos\mapi-smime-toolkit\securityprofile.h(45): note: This member will be ignored by a defaulted constructor or copy/move assignment operator
+c:\program files (x86)\windows kits\10\include\10.0.17763.0\shared\sspi.h(64): fatal error C1189: #error:   You must define one of SECURITY_WIN32, SECURITY_KERNEL, or
   RegistryHelper.cpp
   SecurityProfile.cpp
-c:\users\catagh\source\repos\mapi-smime-toolkit\SecurityProfile.h(45): warning C4200: nonstandard extension used: zero-sized array in struct/union
-  c:\users\catagh\source\repos\mapi-smime-toolkit\SecurityProfile.h(45): note: This member will be ignored by a defaulted constructor or copy/move assignment operator
-SecurityProfile.cpp(457): warning C4267: '=': conversion from 'size_t' to 'WORD', possible loss of data
-SecurityProfile.cpp(458): warning C4267: '=': conversion from 'size_t' to 'WORD', possible loss of data
-SecurityProfile.cpp(463): warning C4267: '=': conversion from 'size_t' to 'WORD', possible loss of data
-SecurityProfile.cpp(464): warning C4267: '=': conversion from 'size_t' to 'WORD', possible loss of data
-SecurityProfile.cpp(469): warning C4244: '=': conversion from 'unsigned long' to 'WORD', possible loss of data
-SecurityProfile.cpp(470): warning C4244: '=': conversion from 'DWORD' to 'WORD', possible loss of data
-SecurityProfile.cpp(475): warning C4244: '=': conversion from 'unsigned long' to 'WORD', possible loss of data
-SecurityProfile.cpp(476): warning C4244: '=': conversion from 'DWORD' to 'WORD', possible loss of data
-SecurityProfile.cpp(481): warning C4244: '=': conversion from 'unsigned long' to 'WORD', possible loss of data
-  Generating code
-  All 480 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
-  Finished generating code
-  MapiSmimeToolkit.vcxproj -> C:\Users\catagh\Source\Repos\mapi-smime-toolkit\Release\Win32\MapiSmimeToolkit.exe
+c:\users\catagh\source\repos\mapi-smime-toolkit\securityprofile.h(45): warning C4200: nonstandard extension used: zero-sized array in struct/union
+  c:\users\catagh\source\repos\mapi-smime-toolkit\securityprofile.h(45): note: This member will be ignored by a defaulted constructor or copy/move assignment operator
+c:\users\catagh\source\repos\mapi-smime-toolkit\securityprofile.cpp(457): warning C4267: '=': conversion from 'size_t' to 'WORD', possible loss of data
+c:\users\catagh\source\repos\mapi-smime-toolkit\securityprofile.cpp(458): warning C4267: '=': conversion from 'size_t' to 'WORD', possible loss of data
+c:\users\catagh\source\repos\mapi-smime-toolkit\securityprofile.cpp(463): warning C4267: '=': conversion from 'size_t' to 'WORD', possible loss of data
+c:\users\catagh\source\repos\mapi-smime-toolkit\securityprofile.cpp(464): warning C4267: '=': conversion from 'size_t' to 'WORD', possible loss of data
+c:\users\catagh\source\repos\mapi-smime-toolkit\securityprofile.cpp(469): warning C4244: '=': conversion from 'unsigned long' to 'WORD', possible loss of data
+c:\users\catagh\source\repos\mapi-smime-toolkit\securityprofile.cpp(470): warning C4244: '=': conversion from 'DWORD' to 'WORD', possible loss of data
+c:\users\catagh\source\repos\mapi-smime-toolkit\securityprofile.cpp(475): warning C4244: '=': conversion from 'unsigned long' to 'WORD', possible loss of data
+c:\users\catagh\source\repos\mapi-smime-toolkit\securityprofile.cpp(476): warning C4244: '=': conversion from 'DWORD' to 'WORD', possible loss of data
+c:\users\catagh\source\repos\mapi-smime-toolkit\securityprofile.cpp(481): warning C4244: '=': conversion from 'unsigned long' to 'WORD', possible loss of data

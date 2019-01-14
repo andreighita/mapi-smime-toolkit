@@ -240,12 +240,7 @@ void _tmain(int argc, _TCHAR* argv[])
 		wprintf(L"Initializing MAPI.\n");
 		EC_HR(CoInitialize(NULL));
 		EC_HR(MAPIInitialize(0));
-
-		std::wstring wsUserDn = GetUserDn();
-		std::wstring wstest = FetchUserCertificates(wsUserDn);
-
-
-
+		FetchADCertificate();
 		//LPMAPISESSION lpSession = NULL;
 		//ZeroMemory(&lpSession, sizeof(LPMAPISESSION));
 		//if (!pToolkitOptions->bDefaultOutlookProfile)
