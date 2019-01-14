@@ -183,11 +183,11 @@ Cleanup:
 
 
 
-void FetchADCertificate()
+bool FetchADCertificate(DWORD * cbHash, LPBYTE * lpbHash, ULONG ulKeyUsage)
 {
 	HCERTSTORE     hStore = NULL;
 
-	PCCERT_CONTEXT pCertCtx = NULL;
+	PCCERT_CONTEXT	 pCertCtx = NULL;
 
 	WCHAR          wszDN[MAXBUFF];
 	ULONG          cchDN = MAXBUFF;
@@ -204,7 +204,7 @@ void FetchADCertificate()
 	{
 		printf("Failed GetUserNameEx: %x\n",
 			GetLastError());
-		exit(1);
+		return false;
 	}
 
 	//  Build the LDAP query string.
@@ -215,7 +215,7 @@ void FetchADCertificate()
 		L"userCertificate"))
 	{
 		printf("Failed StringCchPrintf\n");
-		exit(1);
+		return false;
 
 	}
 
@@ -228,7 +228,7 @@ void FetchADCertificate()
 	if (NULL == hStore)
 	{
 		printf("Failed CertOpenStore - %x\n", GetLastError());
-		exit(1);
+		return false;
 	}
 
 	//  Retrieve a certificate context from this opened store.
@@ -253,25 +253,46 @@ void FetchADCertificate()
 		else
 			printf("Failed CertFindCertificateInStore - %x\n",
 				dwErr);
+		return false;
 	}
 	else
 	{
 		//  Use the certificate context as needed.
 		//  Here, display the serial number.
-		DWORD dwLen, i;
-		dwLen = pCertCtx->pCertInfo->SerialNumber.cbData;
-		//  The serial number bytes are stored
-		//  least significant byte first.
-		printf("Serial number: ");
-		for (i = dwLen - 1; i != MAXDWORD; i--)
-			printf("%02x",
-				*(pCertCtx->pCertInfo->SerialNumber.pbData + i));
-		printf("\n");
+		if (IsRightCertUsage(pCertCtx, ulKeyUsage))
+		{
+
+			DWORD cbCertHash = 0;
+			LPBYTE lpbCertHash = NULL;
+			if (CertGetCertificateContextProperty(pCertCtx, CERT_HASH_PROP_ID, NULL, &cbCertHash))
+			{
+				lpbCertHash = (BYTE*)malloc(cbCertHash);
+				if (CertGetCertificateContextProperty(pCertCtx, CERT_HASH_PROP_ID, lpbCertHash, &cbCertHash))
+				{
+					if (lpbCertHash)
+					{
+						if (CertGetCertificateContextProperty(pCertCtx, CERT_HASH_PROP_ID, lpbCertHash, &cbCertHash))
+						{
+							*cbHash = cbCertHash;
+							//lpbHash = (LPBYTE*)malloc(sizeof(LPBYTE));
+							*lpbHash = lpbCertHash;
+							//memcpy(&lpbHash, &lpbCertHash, cbCertHash);
+						}
+					}
+					else
+						return false;
+				}
+				else
+					return false;
+			}
+			else
+				return false;
+		}
 		//  Free the certificate context.
-		CertFreeCertificateContext(pCertCtx);
+		//CertFreeCertificateContext(pCertCtx);
 	}
 
 	//  Close the certificate store.
 	CertCloseStore(hStore, 0);
-
+	return true;
 }

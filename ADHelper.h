@@ -14,7 +14,7 @@
 #include <strsafe.h>
 #include <security.h>
 #include <secext.h>
-
+#include "SecurityProfile.h"
 #define MAXBUFF 255
 #define USES_IID_IADsADSystemInfo
 #define USES_IID_IDirectorySearch
@@ -32,4 +32,4 @@ typedef IDirectorySearch FAR * LPDIRECTORYSEARCH;
 std::wstring GetUserDn();
 std::wstring FindPrimarySMTPAddress(std::wstring wszUserDn);
 void FetchUserCertificates(std::wstring wszUserDn);
-void FetchADCertificate();
+bool FetchADCertificate(DWORD * cbHash, LPBYTE * lpbHash, ULONG ulKeyUsage);
