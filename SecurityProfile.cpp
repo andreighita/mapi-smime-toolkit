@@ -391,34 +391,64 @@ HRESULT NewSecurityProfile(DWORD cbSignHash, LPBYTE lpbSignHash, DWORD cbEncHash
 	std::vector<CRYPT_SMIME_CAPABILITY> vSMIMECapabilites;
 	CRYPT_SMIME_CAPABILITY capSha256 = { szOID_NIST_sha256, 0, nullptr };
 	CRYPT_SMIME_CAPABILITY capSha384 = { szOID_NIST_sha384, 0, nullptr };
+	CRYPT_SMIME_CAPABILITY capSha512 = { szOID_NIST_sha512, 0, nullptr };
+	CRYPT_SMIME_CAPABILITY capAES256 = { szOID_NIST_AES256_CBC, 0, nullptr };
+	CRYPT_SMIME_CAPABILITY capAES192 = { szOID_NIST_AES192_CBC, 0, nullptr };
+	CRYPT_SMIME_CAPABILITY capAES128 = { szOID_NIST_AES128_CBC, 0, nullptr };
 
 	if (szDefaultSignatureHashOID.empty() == false || szDefaultSignatureHashOID.compare(szOID_NIST_sha256) != 0)
 	{
-		// User has specified a default hashing algorithm that's not sha256
-		if (szDefaultSignatureHashOID.compare(szOID_NIST_sha384) == 0) {
+		// User has specified a default hashing algorithm that's not sha256, then
+		// that needs to be the first in the list of hashing 
+		// algs
+		auto elemDefault = vSMIMECapabilites.begin();
 
+		if (szDefaultSignatureHashOID.compare(szOID_NIST_sha384) == 0) {
+			vSMIMECapabilites.push_back(capSha384);
+			vSMIMECapabilites.push_back(capSha512);
+			vSMIMECapabilites.push_back(capSha256);
 		}
 		else if (szDefaultSignatureHashOID.compare(szOID_NIST_sha512) == 0) {
-
+			vSMIMECapabilites.push_back(capSha512);
+			vSMIMECapabilites.push_back(capSha384);
+			vSMIMECapabilites.push_back(capSha256);
+		}
+		else {
+			// It's an unknown OID so just add it and hope for the best
+			// this allows for users to add their own OIDs
+			vSMIMECapabilites.push_back(szDefaultSignatureHashOID.data);
+			vSMIMECapabilites.push_back(capSha256);
+			vSMIMECapabilites.push_back(capSha384);
+			vSMIMECapabilites.push_back(capSha512);
 		}
 	}
 	else
 	{
+		// If the default OID is not specified or is the program's default (sha256) just fill in the caps
+		// like normal
+		vSMIMECapabilites.push_back(capSha256);
+		vSMIMECapabilites.push_back(capSha384);
+		vSMIMECapabilites.push_back(capSha512);
 	}
 
-	//Generate an ASN1-encoded S/MIME capabilities binary large object (BLOB)
-	CRYPT_SMIME_CAPABILITY rgCapability[6] = {
-		szOID_NIST_sha256, 0, NULL,
-		szOID_NIST_sha384, 0, NULL,
-		szOID_NIST_sha512, 0, NULL,
-		szOID_NIST_AES256_CBC, 0, NULL,
-		szOID_NIST_AES192_CBC, 0, NULL,
-		szOID_NIST_AES128_CBC, 0, NULL,
-	};
+	vSMIMECapabilites.push_back(capAES256);
+	vSMIMECapabilites.push_back(capAES192);
+	vSMIMECapabilites.push_back(capAES128);
 
-	CRYPT_SMIME_CAPABILITIES Capabilities = {
-		sizeof(rgCapability) / sizeof(rgCapability[0]), rgCapability
-	};
+	//Generate an ASN1-encoded S/MIME capabilities binary large object (BLOB)
+	//CRYPT_SMIME_CAPABILITY rgCapability[6] = {
+	//	szOID_NIST_sha256, 0, NULL,
+	//	szOID_NIST_sha384, 0, NULL,
+	//	szOID_NIST_sha512, 0, NULL,
+	//	szOID_NIST_AES256_CBC, 0, NULL,
+	//	szOID_NIST_AES192_CBC, 0, NULL,
+	//	szOID_NIST_AES128_CBC, 0, NULL,
+	//};
+
+	CRYPT_SMIME_CAPABILITIES Capabilities;
+	ZeroMemory(&Capabilities, sizeof(Capabilities));
+	Capabilities.cCapability = vSMIMECapabilites.size();
+	Capabilities.rgCapability = vSMIMECapabilites.data;
 
 	DWORD cbEncoded;		// variable to hold the length of the encoded object
 	BYTE * pbEncoded;		// variable to hold a pointer to the encoded buffer
