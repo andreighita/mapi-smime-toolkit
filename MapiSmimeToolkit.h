@@ -17,6 +17,7 @@ struct ToolkitOptions
 	bool bDefaultOutlookProfile;
 	bool bDefaultSecurityProfule;
 	bool bOverWrite;
+	std::string szDefaultSignatureHashOID;
 	ULONG ulCertMode;
 	ULONG ulRunningMode;
 };

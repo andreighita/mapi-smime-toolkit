@@ -18,6 +18,7 @@ Options:
        -s:     The Signature certificate hash (thumbprint)
        -e:     The Encryption certificate hash (thumbprint)
        -u:     The user e-mail address to add to the security profile name
+       -x:     The OID of the hash algorithm to use as the default (e.g. "2.16.840.1.101.3.4.2.2" for sha384)
        -p:     The name of the Outlook profile to perform the changes in.
                If this is not specified, the default Outlook profile will be used.
        -l:     For running the tool in List mode.

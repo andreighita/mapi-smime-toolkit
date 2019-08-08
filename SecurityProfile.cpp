@@ -2,6 +2,7 @@
 #include "SecurityProfile.h"
 #include <iostream>
 #include <sstream>
+#include <vector>
 
 #define MY_ENCODING_TYPE  (PKCS_7_ASN_ENCODING | X509_ASN_ENCODING)
 #define GetWord(pwSrc)   (*(UNALIGNED WORD *)(pwSrc))
@@ -381,11 +382,13 @@ BOOL LookUpEncryptionCertificate(std::wstring wszSmtpAddress, PCCERT_CONTEXT * p
 // pccEncryption = the SMIME encryption certificate
 // wsProfileName = the name of the security profile as displayed by Outloolk
 // bDefaultProfile = indicates whether this should be saved as the default SMIME security profile
+// Default hash algorithm
 // lpProfile = the returned payload
-HRESULT NewSecurityProfile(DWORD cbSignHash, LPBYTE lpbSignHash, DWORD cbEncHash, LPBYTE lpbEncHash, std::wstring wsProfileName, bool bDefaultProfile, LPSBinary lpProfile)
+HRESULT NewSecurityProfile(DWORD cbSignHash, LPBYTE lpbSignHash, DWORD cbEncHash, LPBYTE lpbEncHash, std::wstring wsProfileName, bool bDefaultProfile, std::string szDefaultSignatureHashOID, LPSBinary lpProfile)
 {
 	HRESULT hRes = S_OK;
 	ULONG cCertContext = 0;
+	std::vector<CRYPT_SMIME_CAPABILITY> vSMIMECapabilites;
 
 	//Generate an ASN1-encoded S/MIME capabilities binary large object (BLOB)
 	CRYPT_SMIME_CAPABILITY rgCapability[6] = {
