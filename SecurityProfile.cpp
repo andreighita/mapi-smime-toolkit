@@ -389,6 +389,22 @@ HRESULT NewSecurityProfile(DWORD cbSignHash, LPBYTE lpbSignHash, DWORD cbEncHash
 	HRESULT hRes = S_OK;
 	ULONG cCertContext = 0;
 	std::vector<CRYPT_SMIME_CAPABILITY> vSMIMECapabilites;
+	CRYPT_SMIME_CAPABILITY capSha256 = { szOID_NIST_sha256, 0, nullptr };
+	CRYPT_SMIME_CAPABILITY capSha384 = { szOID_NIST_sha384, 0, nullptr };
+
+	if (szDefaultSignatureHashOID.empty() == false || szDefaultSignatureHashOID.compare(szOID_NIST_sha256) != 0)
+	{
+		// User has specified a default hashing algorithm that's not sha256
+		if (szDefaultSignatureHashOID.compare(szOID_NIST_sha384) == 0) {
+
+		}
+		else if (szDefaultSignatureHashOID.compare(szOID_NIST_sha512) == 0) {
+
+		}
+	}
+	else
+	{
+	}
 
 	//Generate an ASN1-encoded S/MIME capabilities binary large object (BLOB)
 	CRYPT_SMIME_CAPABILITY rgCapability[6] = {
