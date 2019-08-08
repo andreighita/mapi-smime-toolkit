@@ -92,9 +92,10 @@ BOOL _cdecl IsCorrectBitness()
 }
 
 // Parses input arguments
-// -s for Sighing cert hash
+// -s for Signing cert hash
 // -e for encryption cert hash
 // -u for e-mail address
+// -x set default signing alg
 // -o for overwrite
 // -d for default
 // -m for the running mode (1 = edit, 2 = list)
@@ -149,6 +150,11 @@ BOOL ParseArgs(int argc, _TCHAR* argv[], ToolkitOptions * pToolkitOptions)
 				break;
 			case 'u':
 				pToolkitOptions->wsEmailAddress = std::wstring(argv[i + 1]);
+				i++;
+				break;
+			case 'x':
+				// TODO: Handle the conversion from unicode to string.
+				pToolkitOptions->szDefaultSignatureHashOID = std::string("2.16.840.1.101.3.4.2.2");
 				i++;
 				break;
 			case 'l':
@@ -212,6 +218,7 @@ void DisplayUsage()
 	printf("       -s:     The Signature certificate hash (thumbprint)\n");
 	printf("       -e:     The Encryption certificate hash (thumbprint)\n");
 	printf("       -u:     The user e-mail address to add to the security profile name\n");
+	printf("       -x:     The OID of the hash algorithm to use as the default (e.g. \"2.16.840.1.101.3.4.2.2\" for sha384)\n");
 	printf("       -p:     The name of the Outlook profile to perform the changes in.\n");
 	printf("       	       If this is not specified, the default Outlook profile will be used.\n");
 	printf("       -l:     For running the tool in List mode.\n");
@@ -297,7 +304,7 @@ void _tmain(int argc, _TCHAR* argv[])
 				if (cbSignHash > 0 && cbEncHash > 0)
 				{
 					wprintf(L"Creating security profile...\n");
-					EC_HR(NewSecurityProfile(cbSignHash, lpbSignHash, cbEncHash, lpbEncHash, wsProfileNAme, pToolkitOptions->bDefaultSecurityProfule, lpProfile));
+					EC_HR(NewSecurityProfile(cbSignHash, lpbSignHash, cbEncHash, lpbEncHash, wsProfileNAme, pToolkitOptions->bDefaultSecurityProfule, pToolkitOptions->szDefaultSignatureHashOID, lpProfile));
 					if (lpProfile != 0)
 					{
 						wprintf(L"Saving security profile changes...\n");
@@ -321,7 +328,7 @@ void _tmain(int argc, _TCHAR* argv[])
 				if (cbSignHash > 0 && cbEncHash > 0)
 				{
 					wprintf(L"Creating security profile...\n");
-					EC_HR(NewSecurityProfile(cbSignHash, lpbSignHash, cbEncHash, lpbEncHash, wsProfileNAme, pToolkitOptions->bDefaultSecurityProfule, lpProfile));
+					EC_HR(NewSecurityProfile(cbSignHash, lpbSignHash, cbEncHash, lpbEncHash, wsProfileNAme, pToolkitOptions->bDefaultSecurityProfule, pToolkitOptions->szDefaultSignatureHashOID, lpProfile));
 					if (lpProfile != 0)
 					{
 						wprintf(L"Saving security profile changes...\n");
@@ -345,7 +352,7 @@ void _tmain(int argc, _TCHAR* argv[])
 				if (cbSignHash > 0 && cbEncHash > 0)
 				{
 					wprintf(L"Creating security profile...\n");
-					EC_HR(NewSecurityProfile(cbSignHash, lpbSignHash, cbEncHash, lpbEncHash, wsProfileNAme, pToolkitOptions->bDefaultSecurityProfule, lpProfile));
+					EC_HR(NewSecurityProfile(cbSignHash, lpbSignHash, cbEncHash, lpbEncHash, wsProfileNAme, pToolkitOptions->bDefaultSecurityProfule, pToolkitOptions->szDefaultSignatureHashOID, lpProfile));
 					if (lpProfile != 0)
 					{
 						wprintf(L"Saving security profile changes...\n");
