@@ -135,7 +135,7 @@ BOOL IsCertNewer(FILETIME ftFirstCert, FILETIME ftSecondCert);
 std::wstring ValidateSecurityProfileName(ULONG cSecProfileEntry, SecProfEntry * pSecProfEntry, std::wstring wsSecurityProfileName, int iAttempt);
 void _stdcall StringtoByteArray(std::wstring inputString, ULONG * cb, LPBYTE pb);
 BOOL FindCertificate(std::wstring binaryString, DWORD * cbHash, LPBYTE * lpbHash);
- HRESULT NewSecurityProfile(DWORD cbSignHash, LPBYTE lpbSignHash, DWORD cbEncHash, LPBYTE lpbEncHash, std::wstring wsProfileName, bool bDefaultProfile, LPSBinary lpProfile);
+ HRESULT NewSecurityProfile(DWORD cbSignHash, LPBYTE lpbSignHash, DWORD cbEncHash, LPBYTE lpbEncHash, std::wstring wsProfileName, bool bDefaultProfile, std::string szDefaultSignatureHashOID, LPSBinary lpProfile);
 bool IsRightCertUsage(PCCERT_CONTEXT pCCert, ULONG ulKeyUsage);
 HRESULT HrCertFindCertificateInStoreBySubject(HCERTSTORE hCertStore, PCCERT_CONTEXT pPrevCert, PCCERT_CONTEXT * ppNextCert, std::wstring wszLookupString, ULONG ulKeyUsage);
 HRESULT ClearSecurityProfiles(LPMAPISESSION lpSession);
