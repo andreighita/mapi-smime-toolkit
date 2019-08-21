@@ -17,6 +17,21 @@ BOOL Is64BitProcess(void)
 #endif
 }
 
+// Convert the incoming LPCWSTR into a simple std::string
+std::string ConvertWideStringToString(LPCWSTR input)
+{
+	int cch = WideCharToMultiByte(GetACP(), 0, input, -1, nullptr, 0, nullptr, nullptr);
+	std::unique_ptr<char> pSz = std::unique_ptr<char>(new char[cch]);
+	ZeroMemory(pSz.get(), cch);
+	cch = WideCharToMultiByte(GetACP(), 0, input, -1, pSz.get(), cch, nullptr, nullptr);
+	if (cch == 0) {
+		return std::string();
+	}
+	else {
+		return std::string(pSz.get());
+	}
+}
+
 BOOL _cdecl IsCorrectBitness()
 {
 
@@ -153,8 +168,12 @@ BOOL ParseArgs(int argc, _TCHAR* argv[], ToolkitOptions * pToolkitOptions)
 				i++;
 				break;
 			case 'x':
-				// TODO: Handle the conversion from unicode to string.
-				pToolkitOptions->szDefaultSignatureHashOID = std::string("2.16.840.1.101.3.4.2.2");
+#ifdef UNICODE
+				pToolkitOptions->szDefaultSignatureHashOID = std::string(ConvertWideStringToString(argv[i + 1]));
+#else
+				pToolkitOptions->szDefaultSignatureHashOID = std::string(argv[i + 1]);
+#endif // UNICODE
+
 				i++;
 				break;
 			case 'l':

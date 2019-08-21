@@ -24,3 +24,4 @@ struct ToolkitOptions
 
 
 BOOL IsCorrectBitness();
+std::string ConvertWideStringToString(LPCWSTR input);

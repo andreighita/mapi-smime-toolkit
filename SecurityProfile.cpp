@@ -393,36 +393,40 @@ HRESULT NewSecurityProfile(DWORD cbSignHash, LPBYTE lpbSignHash, DWORD cbEncHash
 	CRYPT_SMIME_CAPABILITY capAES192 = { szOID_NIST_AES192_CBC, 0, nullptr };
 	CRYPT_SMIME_CAPABILITY capAES128 = { szOID_NIST_AES128_CBC, 0, nullptr };
 
+	// Set up the SMIME Caps with the default order
 	std::vector<CRYPT_SMIME_CAPABILITY> vSMIMECapabilites {
 		{ szOID_NIST_sha256, 0, nullptr },
 		{ szOID_NIST_sha384, 0, nullptr },
 		{ szOID_NIST_sha512, 0, nullptr },
 	};
 
-	if (szDefaultSignatureHashOID.empty() || szDefaultSignatureHashOID.length == 0) {
-		szDefaultSignatureHashOID = szOID_NIST_sha256;
+	if (szDefaultSignatureHashOID.length() > 0) {
+		// The user has specified a preference
+		// Capture the preference hashing alg, and sort the vector accordingly
+		std::sort(vSMIMECapabilites.begin(), vSMIMECapabilites.end(), [szDefaultSignatureHashOID](CRYPT_SMIME_CAPABILITY cap1, CRYPT_SMIME_CAPABILITY cap2) -> bool {
+			// The selected default OID always takes precedence
+			if (cap1.pszObjId == szDefaultSignatureHashOID) {
+				return true;
+			}
+			else if (cap2.pszObjId == szDefaultSignatureHashOID) {
+				return false;
+			}
+			// from there, just follow the original ordering
+			else if (cap1.pszObjId == szOID_NIST_sha256 && (cap2.pszObjId == szOID_NIST_sha384 || cap2.pszObjId == szOID_NIST_sha512)) {
+				return true;
+			}
+			else if (cap1.pszObjId == szOID_NIST_sha384 && cap2.pszObjId == szOID_NIST_sha256) {
+				return false;
+			}
+			else if (cap1.pszObjId == szOID_NIST_sha384 && cap2.pszObjId == szOID_NIST_sha512) {
+				return true;
+			}
+			else if (cap1.pszObjId == szOID_NIST_sha512 && (cap2.pszObjId == szOID_NIST_sha256 || cap2.pszObjId == szOID_NIST_sha384)) {
+				return false;
+			}
+			return false;
+		});
 	}
-
-	// Capture the default selected hashing alg, and sort the vector accordingly
-	std::sort(vSMIMECapabilites.begin(), vSMIMECapabilites.end(), [szDefaultSignatureHashOID](CRYPT_SMIME_CAPABILITY cap1, CRYPT_SMIME_CAPABILITY cap2) -> bool {
-		// The selected default OID always takes precedence
-		if (cap1.pszObjId == szDefaultSignatureHashOID) {
-			return true;
-		}
-		// from there, just follow the original ordering
-		else if (cap1.pszObjId == szOID_NIST_sha256 && (cap2.pszObjId == szOID_NIST_sha384 || cap2.pszObjId == szOID_NIST_sha512)) {
-			return true;
-		}
-		else if (cap1.pszObjId == szOID_NIST_sha384 && cap2.pszObjId == szOID_NIST_sha256) {
-			return false;
-		}
-		else if (cap1.pszObjId == szOID_NIST_sha384 && cap2.pszObjId == szOID_NIST_sha512) {
-			return true;
-		}
-		else if (cap1.pszObjId == szOID_NIST_sha512 && (cap2.pszObjId == szOID_NIST_sha256 || cap2.pszObjId == szOID_NIST_sha384)) {
-			return false;
-		}
-	});
 
 	// Now that the hashing algs are sorted, go ahead and add the encryption algs
 	vSMIMECapabilites.push_back(capAES256);
@@ -430,19 +434,10 @@ HRESULT NewSecurityProfile(DWORD cbSignHash, LPBYTE lpbSignHash, DWORD cbEncHash
 	vSMIMECapabilites.push_back(capAES128);
 
 	//Generate an ASN1-encoded S/MIME capabilities binary large object (BLOB)
-	//CRYPT_SMIME_CAPABILITY rgCapability[6] = {
-	//	szOID_NIST_sha256, 0, NULL,
-	//	szOID_NIST_sha384, 0, NULL,
-	//	szOID_NIST_sha512, 0, NULL,
-	//	szOID_NIST_AES256_CBC, 0, NULL,
-	//	szOID_NIST_AES192_CBC, 0, NULL,
-	//	szOID_NIST_AES128_CBC, 0, NULL,
-	//};
-
 	CRYPT_SMIME_CAPABILITIES Capabilities;
 	ZeroMemory(&Capabilities, sizeof(Capabilities));
 	Capabilities.cCapability = vSMIMECapabilites.size();
-	Capabilities.rgCapability = vSMIMECapabilites.data;
+	Capabilities.rgCapability = vSMIMECapabilites.data();
 
 	DWORD cbEncoded;		// variable to hold the length of the encoded object
 	BYTE * pbEncoded;		// variable to hold a pointer to the encoded buffer
