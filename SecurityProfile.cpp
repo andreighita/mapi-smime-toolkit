@@ -309,71 +309,71 @@ BOOL LookUpEncryptionCertificate(std::wstring wszSmtpAddress, PCCERT_CONTEXT * p
 
 
 
-	MAPIAllocateBuffer(sizeof(PCCERT_CONTEXT), (LPVOID*)&pNewestCert);
-	ZeroMemory(&pNewestCert, sizeof(PCCERT_CONTEXT));
+MAPIAllocateBuffer(sizeof(PCCERT_CONTEXT), (LPVOID*)&pNewestCert);
+ZeroMemory(&pNewestCert, sizeof(PCCERT_CONTEXT));
 
-	ULONG cCertContext = 0;
-	if (hSystemStore = CertOpenStore(
-		CERT_STORE_PROV_SYSTEM, // System store will be a 
-								// virtual store
-		0,                      // Encoding type not needed 
-								// with this PROV
-		NULL,                   // Accept the default HCRYPTPROV
-		CERT_SYSTEM_STORE_CURRENT_USER,
-		// Set the system store location in the
-		// registry
-		L"MY"))                 // Could have used other predefined 
-								// system stores
-								// including Trust, CA, or Root
+ULONG cCertContext = 0;
+if (hSystemStore = CertOpenStore(
+	CERT_STORE_PROV_SYSTEM, // System store will be a 
+							// virtual store
+	0,                      // Encoding type not needed 
+							// with this PROV
+	NULL,                   // Accept the default HCRYPTPROV
+	CERT_SYSTEM_STORE_CURRENT_USER,
+	// Set the system store location in the
+	// registry
+	L"MY"))                 // Could have used other predefined 
+							// system stores
+							// including Trust, CA, or Root
+{
+	printf("Open the MY system store.\n");
+}
+else
+{
+	printf("Could not open the MY system store.\n");
+	return S_FALSE;
+}
+
+//-------------------------------------------------------------------
+// Get certificates that have the string represented by wszSmtpAddress 
+// in their subject. 
+
+CERT_DATA newestCertData = { 0 };
+printf("Looking up your certificate based on the search string you've provided...\n");
+if SUCCEEDED(HrCertFindCertificateInStoreBySubject(hSystemStore, NULL, &pOffsetCert, wszSmtpAddress))
+{
+	memcpy(&pNewestCert, &pOffsetCert, sizeof(PCCERT_CONTEXT));
+
+	do
 	{
-		printf("Open the MY system store.\n");
-	}
-	else
-	{
-		printf("Could not open the MY system store.\n");
-		return S_FALSE;
-	}
-
-	//-------------------------------------------------------------------
-	// Get certificates that have the string represented by wszSmtpAddress 
-	// in their subject. 
-
-	CERT_DATA newestCertData = { 0 };
-	printf("Looking up your certificate based on the search string you've provided...\n");
-	if SUCCEEDED(HrCertFindCertificateInStoreBySubject(hSystemStore, NULL, &pOffsetCert, wszSmtpAddress))
-	{
-		memcpy(&pNewestCert, &pOffsetCert, sizeof(PCCERT_CONTEXT));
-
-		do
+		hr = HrCertFindCertificateInStoreBySubject(hSystemStore, pOffsetCert, &pNewCert, wszSmtpAddress);
+		if (S_OK == hr)
 		{
-			hr = HrCertFindCertificateInStoreBySubject(hSystemStore, pOffsetCert, &pNewCert, wszSmtpAddress);
-			if (S_OK == hr)
+			//lpSysTime = SYSTEMTIME();
+			//converted = FileTimeToSystemTime(&pNewCert->pCertInfo->NotAfter, &lpSysTime);
+			if (IsCertNewer(pNewCert->pCertInfo->NotAfter, pNewestCert->pCertInfo->NotAfter))
 			{
-				//lpSysTime = SYSTEMTIME();
-				//converted = FileTimeToSystemTime(&pNewCert->pCertInfo->NotAfter, &lpSysTime);
-				if (IsCertNewer(pNewCert->pCertInfo->NotAfter, pNewestCert->pCertInfo->NotAfter))
-				{
-					memcpy(&pNewestCert, &pNewCert, sizeof(PCCERT_CONTEXT));
-				}
+				memcpy(&pNewestCert, &pNewCert, sizeof(PCCERT_CONTEXT));
 			}
-			memcpy(&pOffsetCert, &pNewCert, sizeof(PCCERT_CONTEXT));
-			//ZeroMemory((LPVOID*)&pNewCert, sizeof(PCCERT_CONTEXT));
-		} while (S_OK == hr);
-		if (S_OK != hr)
-		{
-
 		}
-	}
-
-	if (pNewestCert)
+		memcpy(&pOffsetCert, &pNewCert, sizeof(PCCERT_CONTEXT));
+		//ZeroMemory((LPVOID*)&pNewCert, sizeof(PCCERT_CONTEXT));
+	} while (S_OK == hr);
+	if (S_OK != hr)
 	{
-		wprintf(L"Certificate found.\n");
-		memcpy((VOID*)pCertContext, &pNewestCert, sizeof(PCCERT_CONTEXT));
-		return true;
-	}
-	else return S_FALSE;
 
-	return SUCCEEDED(hr);
+	}
+}
+
+if (pNewestCert)
+{
+	wprintf(L"Certificate found.\n");
+	memcpy((VOID*)pCertContext, &pNewestCert, sizeof(PCCERT_CONTEXT));
+	return true;
+}
+else return S_FALSE;
+
+return SUCCEEDED(hr);
 }
 
 
@@ -388,21 +388,56 @@ HRESULT NewSecurityProfile(DWORD cbSignHash, LPBYTE lpbSignHash, DWORD cbEncHash
 {
 	HRESULT hRes = S_OK;
 	ULONG cCertContext = 0;
-	std::vector<CRYPT_SMIME_CAPABILITY> vSMIMECapabilites;
+
+	CRYPT_SMIME_CAPABILITY capAES256 = { szOID_NIST_AES256_CBC, 0, nullptr };
+	CRYPT_SMIME_CAPABILITY capAES192 = { szOID_NIST_AES192_CBC, 0, nullptr };
+	CRYPT_SMIME_CAPABILITY capAES128 = { szOID_NIST_AES128_CBC, 0, nullptr };
+
+	// Set up the SMIME Caps with the default order
+	std::vector<CRYPT_SMIME_CAPABILITY> vSMIMECapabilites {
+		{ szOID_NIST_sha256, 0, nullptr },
+		{ szOID_NIST_sha384, 0, nullptr },
+		{ szOID_NIST_sha512, 0, nullptr },
+	};
+
+	if (szDefaultSignatureHashOID.length() > 0) {
+		// The user has specified a preference
+		// Capture the preference hashing alg, and sort the vector accordingly
+		std::sort(vSMIMECapabilites.begin(), vSMIMECapabilites.end(), [szDefaultSignatureHashOID](CRYPT_SMIME_CAPABILITY cap1, CRYPT_SMIME_CAPABILITY cap2) -> bool {
+			// The selected default OID always takes precedence
+			if (cap1.pszObjId == szDefaultSignatureHashOID) {
+				return true;
+			}
+			else if (cap2.pszObjId == szDefaultSignatureHashOID) {
+				return false;
+			}
+			// from there, just follow the original ordering
+			else if (cap1.pszObjId == szOID_NIST_sha256 && (cap2.pszObjId == szOID_NIST_sha384 || cap2.pszObjId == szOID_NIST_sha512)) {
+				return true;
+			}
+			else if (cap1.pszObjId == szOID_NIST_sha384 && cap2.pszObjId == szOID_NIST_sha256) {
+				return false;
+			}
+			else if (cap1.pszObjId == szOID_NIST_sha384 && cap2.pszObjId == szOID_NIST_sha512) {
+				return true;
+			}
+			else if (cap1.pszObjId == szOID_NIST_sha512 && (cap2.pszObjId == szOID_NIST_sha256 || cap2.pszObjId == szOID_NIST_sha384)) {
+				return false;
+			}
+			return false;
+		});
+	}
+
+	// Now that the hashing algs are sorted, go ahead and add the encryption algs
+	vSMIMECapabilites.push_back(capAES256);
+	vSMIMECapabilites.push_back(capAES192);
+	vSMIMECapabilites.push_back(capAES128);
 
 	//Generate an ASN1-encoded S/MIME capabilities binary large object (BLOB)
-	CRYPT_SMIME_CAPABILITY rgCapability[6] = {
-		szOID_NIST_sha256, 0, NULL,
-		szOID_NIST_sha384, 0, NULL,
-		szOID_NIST_sha512, 0, NULL,
-		szOID_NIST_AES256_CBC, 0, NULL,
-		szOID_NIST_AES192_CBC, 0, NULL,
-		szOID_NIST_AES128_CBC, 0, NULL,
-	};
-
-	CRYPT_SMIME_CAPABILITIES Capabilities = {
-		sizeof(rgCapability) / sizeof(rgCapability[0]), rgCapability
-	};
+	CRYPT_SMIME_CAPABILITIES Capabilities;
+	ZeroMemory(&Capabilities, sizeof(Capabilities));
+	Capabilities.cCapability = vSMIMECapabilites.size();
+	Capabilities.rgCapability = vSMIMECapabilites.data();
 
 	DWORD cbEncoded;		// variable to hold the length of the encoded object
 	BYTE * pbEncoded;		// variable to hold a pointer to the encoded buffer

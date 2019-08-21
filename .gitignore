@@ -8,3 +8,4 @@ UpgradeLog2.htm
 *.aps
 # System files
 .DS_Store
+MapiSmimeToolkit.vcxproj.user
