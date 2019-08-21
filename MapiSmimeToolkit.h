@@ -17,9 +17,11 @@ struct ToolkitOptions
 	bool bDefaultOutlookProfile;
 	bool bDefaultSecurityProfule;
 	bool bOverWrite;
+	std::string szDefaultSignatureHashOID;
 	ULONG ulCertMode;
 	ULONG ulRunningMode;
 };
 
 
 BOOL IsCorrectBitness();
+std::string ConvertWideStringToString(LPCWSTR input);

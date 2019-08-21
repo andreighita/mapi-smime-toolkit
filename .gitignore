@@ -1,0 +1,11 @@
+# Ignore Debug folder
+/Debug
+/Release
+/x64
+/.vs
+UpgradeLog.htm
+UpgradeLog2.htm
+*.aps
+# System files
+.DS_Store
+MapiSmimeToolkit.vcxproj.user

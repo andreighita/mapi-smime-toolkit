@@ -1,8 +1,0 @@
-﻿  ADHelper.cpp
-c:\users\catagh\source\repos\mapi-smime-toolkit\securityprofile.h(45): warning C4200: nonstandard extension used: zero-sized array in struct/union
-  c:\users\catagh\source\repos\mapi-smime-toolkit\securityprofile.h(45): note: This member will be ignored by a defaulted constructor or copy/move assignment operator
-  MapiSmimeToolkit.cpp
-c:\users\catagh\source\repos\mapi-smime-toolkit\securityprofile.h(45): warning C4200: nonstandard extension used: zero-sized array in struct/union
-  c:\users\catagh\source\repos\mapi-smime-toolkit\securityprofile.h(45): note: This member will be ignored by a defaulted constructor or copy/move assignment operator
-  Generating Code...
-  MapiSmimeToolkit.vcxproj -> C:\Users\catagh\Source\Repos\mapi-smime-toolkit\Debug\Win32\MapiSmimeToolkit.exe
