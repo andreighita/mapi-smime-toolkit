@@ -21,15 +21,13 @@ BOOL Is64BitProcess(void)
 std::string ConvertWideStringToString(LPCWSTR input)
 {
 	int cch = WideCharToMultiByte(GetACP(), 0, input, -1, nullptr, 0, nullptr, nullptr);
-	std::unique_ptr<char> pSz = std::unique_ptr<char>(new char[cch]);
+	auto pSz = std::unique_ptr<char[]>(new char[cch]);
 	ZeroMemory(pSz.get(), cch);
 	cch = WideCharToMultiByte(GetACP(), 0, input, -1, pSz.get(), cch, nullptr, nullptr);
 	if (cch == 0) {
 		return std::string();
 	}
-	else {
-		return std::string(pSz.get());
-	}
+	return std::string(pSz.get());
 }
 
 BOOL _cdecl IsCorrectBitness()
