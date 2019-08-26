@@ -20,14 +20,8 @@ BOOL Is64BitProcess(void)
 // Convert the incoming LPCWSTR into a simple std::string
 std::string ConvertWideStringToString(LPCWSTR input)
 {
-	int cch = WideCharToMultiByte(GetACP(), 0, input, -1, nullptr, 0, nullptr, nullptr);
-	auto pSz = std::unique_ptr<char[]>(new char[cch]);
-	ZeroMemory(pSz.get(), cch);
-	cch = WideCharToMultiByte(GetACP(), 0, input, -1, pSz.get(), cch, nullptr, nullptr);
-	if (cch == 0) {
-		return std::string();
-	}
-	return std::string(pSz.get());
+	std::wstring src(input);
+	return std::string(src.begin(), src.end());
 }
 
 BOOL _cdecl IsCorrectBitness()
