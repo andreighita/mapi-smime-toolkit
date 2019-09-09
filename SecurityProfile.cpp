@@ -96,14 +96,6 @@ std::wstring BinToHexWString(_In_opt_count_(cb) const BYTE bytes[], size_t cb, b
 	return lpsz;
 }
 
-LPSTR ConvertWideCharToMultiByte(LPWSTR lpwStr)
-{
-	LPSTR lpStr = new CHAR[lstrlenW(lpwStr) + 1];
-	WideCharToMultiByte(CP_ACP, 0, lpwStr, -1, lpStr, lstrlenW(lpwStr) + 1, 0, 0);
-	return lpStr;
-}
-
-
 BOOL FindCertificate(std::wstring binaryString, DWORD * cbHash, LPBYTE * lpbHash)
 {
 	HRESULT hr = S_OK;
