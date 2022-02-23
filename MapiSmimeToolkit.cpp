@@ -142,10 +142,10 @@ BOOL ParseArgs(int argc, _TCHAR* argv[], ToolkitOptions * pToolkitOptions)
 				pToolkitOptions->bOverWrite = true;
 				break;
 			case 'd':
-				if (_tcsclen(argv[i]) < 3) {
+				if (_tcsclen(argv[i]) == 2) {
 					pToolkitOptions->bDefaultSecurityProfile = true;
 				}
-				else
+				else if (_tcsclen(argv[i]) == 3 && argv[i][2] == 's')
 				{
 					pToolkitOptions->bDontSendCertificates = true;
 				}
