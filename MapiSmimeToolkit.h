@@ -15,7 +15,7 @@ struct ToolkitOptions
 	std::wstring wsEncryptionCertHash;
 	std::wstring wsEmailAddress;
 	bool bDefaultOutlookProfile;
-	bool bDefaultSecurityProfule;
+	bool bDefaultSecurityProfile;
 	bool bDontSendCertificates;
 	bool bOverWrite;
 	std::string szDefaultSignatureHashOID;
