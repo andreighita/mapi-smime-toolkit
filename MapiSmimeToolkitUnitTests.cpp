@@ -34,11 +34,13 @@ namespace MapiSmimeToolKit
 					_T(""),
 					_T("-u"),
 					_T("irvins@contoso.com"),
+					_T("-d"),
 					_T("-ds"),
 				};
 
 				Assert::IsTrue(ParseArgs(vPassedArgs.size(), vPassedArgs.data(), &options), _T("The call ParseArgs failed!"));
 				Assert::IsTrue(options.wsEmailAddress == L"irvins@contoso.com", _T("The email is not correct."));
+				Assert::IsTrue(options.bDefaultSecurityProfile, _T("Default Secuirty Profile should be true."));
 				Assert::IsTrue(options.bDontSendCertificates, _T("Don't send certificates should be false!"));
 			}
 
