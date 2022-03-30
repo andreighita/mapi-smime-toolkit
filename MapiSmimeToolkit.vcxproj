@@ -246,11 +246,21 @@
     <ClCompile Include="ADHelper.cpp" />
     <ClCompile Include="MapiSession.cpp" />
     <ClCompile Include="MapiSmimeToolkit.cpp" />
-    <ClCompile Include="MapiSmimeToolkitUnitTests.cpp" />
+    <ClCompile Include="MapiSmimeToolkitUnitTests.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="MapiStubLibrary.cpp" />
     <ClCompile Include="RegistryHelper.cpp" />
     <ClCompile Include="SecurityProfile.cpp" />
-    <ClCompile Include="SecurityProfileUnitTests.cpp" />
+    <ClCompile Include="SecurityProfileUnitTests.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug (Test)|Win32'">Create</PrecompiledHeader>
