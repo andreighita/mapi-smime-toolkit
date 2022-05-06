@@ -376,7 +376,7 @@ return SUCCEEDED(hr);
 // bDefaultProfile = indicates whether this should be saved as the default SMIME security profile
 // Default hash algorithm
 // lpProfile = the returned payload
-HRESULT NewSecurityProfile(DWORD cbSignHash, LPBYTE lpbSignHash, DWORD cbEncHash, LPBYTE lpbEncHash, std::wstring wsProfileName, bool bDefaultProfile, std::string szDefaultSignatureHashOID, LPSBinary lpProfile)
+HRESULT NewSecurityProfile(DWORD cbSignHash, LPBYTE lpbSignHash, DWORD cbEncHash, LPBYTE lpbEncHash, std::wstring wsProfileName, bool bDefaultProfile, std::string szDefaultSignatureHashOID, bool bDontSendCertificates, LPSBinary lpProfile)
 {
 	HRESULT hRes = S_OK;
 	ULONG cCertContext = 0;
@@ -475,11 +475,12 @@ HRESULT NewSecurityProfile(DWORD cbSignHash, LPBYTE lpbSignHash, DWORD cbEncHash
 	sSecProf->certDefaultsSize = sizeof(DWORD) + sizeof(LONG);
 	if (bDefaultProfile)
 	{
-		sSecProf->certDefaultsValue = MSG_DEFAULTS_FOR_FORMAT | MSG_DEFAULTS_GLOBAL | MSG_DEFAULTS_SEND_CERT;
+		sSecProf->certDefaultsValue = MSG_DEFAULTS_FOR_FORMAT | MSG_DEFAULTS_GLOBAL;
 	}
-	else
+
+	if (bDontSendCertificates == false)
 	{
-		sSecProf->certDefaultsValue = MSG_DEFAULTS_SEND_CERT;
+		sSecProf->certDefaultsValue |= MSG_DEFAULTS_SEND_CERT;
 	}
 
 	// PR_CERT_DISPLAY_NAME_A
@@ -589,7 +590,7 @@ HRESULT NewSecurityProfile(DWORD cbSignHash, LPBYTE lpbSignHash, DWORD cbEncHash
 	lpProfile->cb = bytecount;
 	lpProfile->lpb = secProf;
 	//memcpy(lpProfile->lpb, secProf, bytecount);
-	if (sSecProf) MAPIFreeBuffer(sSecProf);
+	if (sSecProf) delete sSecProf;
 Error:
 	goto Cleanup;
 Cleanup:

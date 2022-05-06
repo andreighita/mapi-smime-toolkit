@@ -15,7 +15,8 @@ struct ToolkitOptions
 	std::wstring wsEncryptionCertHash;
 	std::wstring wsEmailAddress;
 	bool bDefaultOutlookProfile;
-	bool bDefaultSecurityProfule;
+	bool bDefaultSecurityProfile;
+	bool bDontSendCertificates;
 	bool bOverWrite;
 	std::string szDefaultSignatureHashOID;
 	ULONG ulCertMode;
@@ -25,3 +26,4 @@ struct ToolkitOptions
 
 BOOL IsCorrectBitness();
 std::string ConvertWideStringToString(LPCWSTR input);
+BOOL ParseArgs(int argc, _TCHAR* argv[], ToolkitOptions * pToolkitOptions);

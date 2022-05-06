@@ -12,7 +12,7 @@ MapiSmimeToolkit - Outlook Security Profile toolkit.
 Allows listing and managing security profiles.
 
 Usage: MapiSmimeToolkit [-s SignatureHash] [-e EncryptionHash] [-u EmailAddress]
-       [-x] [-o] [-d] [-p OutlookProfileName] [-l] [-h]
+       [-x] [-o] [-d] [-p OutlookProfileName] [-l] [-h] [-ds]
 
 Options:
        -s:     The Signature certificate hash (thumbprint)
@@ -26,6 +26,7 @@ Options:
                name look-up.
        -o      Overwrites any existing security profiles.
        -d      Sets the new security profile as the default profile.
+	   -ds     Do not send certificates with messages.
        -c      Clears (removes) all existing security profiles.
        -?      Displays this usage information.
 

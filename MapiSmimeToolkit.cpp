@@ -105,6 +105,7 @@ BOOL _cdecl IsCorrectBitness()
 // -x set default signing alg
 // -o for overwrite
 // -d for default
+// -ds for don't send certificates on send
 // -m for the running mode (1 = edit, 2 = list)
 // -p for the Outlook profile name
 // -l for listing the profiles
@@ -117,8 +118,9 @@ BOOL ParseArgs(int argc, _TCHAR* argv[], ToolkitOptions * pToolkitOptions)
 
 	// Setting running mode to Read as a default
 	pToolkitOptions->bOverWrite = false;
-	pToolkitOptions->bDefaultSecurityProfule = false;
+	pToolkitOptions->bDefaultSecurityProfile = false;
 	pToolkitOptions->bDefaultOutlookProfile = true;
+	pToolkitOptions->bDontSendCertificates = false;
 	pToolkitOptions->ulRunningMode = RUNNINGMODE_EDIT;
 	pToolkitOptions->ulCertMode = CERTMODE_LOOKUP;
 
@@ -140,7 +142,13 @@ BOOL ParseArgs(int argc, _TCHAR* argv[], ToolkitOptions * pToolkitOptions)
 				pToolkitOptions->bOverWrite = true;
 				break;
 			case 'd':
-				pToolkitOptions->bDefaultSecurityProfule = true;
+				if (_tcsclen(argv[i]) == 2) {
+					pToolkitOptions->bDefaultSecurityProfile = true;
+				}
+				else if (_tcsclen(argv[i]) == 3 && argv[i][2] == 's')
+				{
+					pToolkitOptions->bDontSendCertificates = true;
+				}
 				break;
 			case 'p':
 				pToolkitOptions->wsOutlookProfileName = argv[i + 1];
@@ -223,7 +231,7 @@ void DisplayUsage()
 	printf("    Allows listing and managing security profiles.\n");
 	printf("\n");
 	printf("Usage: MapiSmimeToolkit [-s SignatureHash] [-e EncryptionHash] [-u EmailAddress]  \n");
-	printf("       [-o] [-d] [-p OutlookProfileName] [-l] [-h] \n");
+	printf("       [-o] [-d] [-p OutlookProfileName] [-l] [-h] [-a] [-x] [-c] [-ds] \n");
 	printf("\n");
 	printf("Options:\n");
 	printf("       -s:     The Signature certificate hash (thumbprint)\n");
@@ -237,6 +245,7 @@ void DisplayUsage()
 	printf("       	       name look-up.\n");
 	printf("       -o      Overwrites any existing security profiles.\n");
 	printf("       -d      Sets the new security profile as the default profile.\n");
+	printf("       -ds:    Don't send certificates with email messages.\n");
 	printf("       -c      Clears (removes) all existing security profiles.\n");
 	printf("       -a      Performs an Active Directory certificate lookup.\n");
 	printf("       -?      Displays this usage information.\n");
@@ -315,11 +324,11 @@ void _tmain(int argc, _TCHAR* argv[])
 				if (cbSignHash > 0 && cbEncHash > 0)
 				{
 					wprintf(L"Creating security profile...\n");
-					EC_HR(NewSecurityProfile(cbSignHash, lpbSignHash, cbEncHash, lpbEncHash, wsProfileNAme, pToolkitOptions->bDefaultSecurityProfule, pToolkitOptions->szDefaultSignatureHashOID, lpProfile));
+					EC_HR(NewSecurityProfile(cbSignHash, lpbSignHash, cbEncHash, lpbEncHash, wsProfileNAme, pToolkitOptions->bDefaultSecurityProfile, pToolkitOptions->szDefaultSignatureHashOID, pToolkitOptions->bDontSendCertificates, lpProfile));
 					if (lpProfile != 0)
 					{
 						wprintf(L"Saving security profile changes...\n");
-						EC_HR(SaveSecurityProfile(lpSession, lpProfile, pToolkitOptions->bOverWrite, pToolkitOptions->bDefaultSecurityProfule));
+						EC_HR(SaveSecurityProfile(lpSession, lpProfile, pToolkitOptions->bOverWrite, pToolkitOptions->bDefaultSecurityProfile));
 					}
 				}
 				else
@@ -339,11 +348,11 @@ void _tmain(int argc, _TCHAR* argv[])
 				if (cbSignHash > 0 && cbEncHash > 0)
 				{
 					wprintf(L"Creating security profile...\n");
-					EC_HR(NewSecurityProfile(cbSignHash, lpbSignHash, cbEncHash, lpbEncHash, wsProfileNAme, pToolkitOptions->bDefaultSecurityProfule, pToolkitOptions->szDefaultSignatureHashOID, lpProfile));
+					EC_HR(NewSecurityProfile(cbSignHash, lpbSignHash, cbEncHash, lpbEncHash, wsProfileNAme, pToolkitOptions->bDefaultSecurityProfile, pToolkitOptions->szDefaultSignatureHashOID, pToolkitOptions->bDontSendCertificates, lpProfile));
 					if (lpProfile != 0)
 					{
 						wprintf(L"Saving security profile changes...\n");
-						EC_HR(SaveSecurityProfile(lpSession, lpProfile, pToolkitOptions->bOverWrite, pToolkitOptions->bDefaultSecurityProfule));
+						EC_HR(SaveSecurityProfile(lpSession, lpProfile, pToolkitOptions->bOverWrite, pToolkitOptions->bDefaultSecurityProfile));
 					}
 				}
 				else
@@ -363,11 +372,11 @@ void _tmain(int argc, _TCHAR* argv[])
 				if (cbSignHash > 0 && cbEncHash > 0)
 				{
 					wprintf(L"Creating security profile...\n");
-					EC_HR(NewSecurityProfile(cbSignHash, lpbSignHash, cbEncHash, lpbEncHash, wsProfileNAme, pToolkitOptions->bDefaultSecurityProfule, pToolkitOptions->szDefaultSignatureHashOID, lpProfile));
+					EC_HR(NewSecurityProfile(cbSignHash, lpbSignHash, cbEncHash, lpbEncHash, wsProfileNAme, pToolkitOptions->bDefaultSecurityProfile, pToolkitOptions->szDefaultSignatureHashOID, pToolkitOptions->bDontSendCertificates, lpProfile));
 					if (lpProfile != 0)
 					{
 						wprintf(L"Saving security profile changes...\n");
-						EC_HR(SaveSecurityProfile(lpSession, lpProfile, pToolkitOptions->bOverWrite, pToolkitOptions->bDefaultSecurityProfule));
+						EC_HR(SaveSecurityProfile(lpSession, lpProfile, pToolkitOptions->bOverWrite, pToolkitOptions->bDefaultSecurityProfile));
 					}
 				}
 				else
