@@ -231,7 +231,7 @@ void DisplayUsage()
 	printf("    Allows listing and managing security profiles.\n");
 	printf("\n");
 	printf("Usage: MapiSmimeToolkit [-s SignatureHash] [-e EncryptionHash] [-u EmailAddress]  \n");
-	printf("       [-o] [-d] [-p OutlookProfileName] [-l] [-h] \n");
+	printf("       [-o] [-d] [-p OutlookProfileName] [-l] [-h] [-a] [-x] [-c] [-ds] \n");
 	printf("\n");
 	printf("Options:\n");
 	printf("       -s:     The Signature certificate hash (thumbprint)\n");
